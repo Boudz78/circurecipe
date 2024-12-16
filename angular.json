@@ -5,7 +5,11 @@
   "projects": {
     "circurecipe": {
       "projectType": "application",
-      "schematics": {},
+      "schematics": {
+        "@schematics/angular:component": {
+          "style": "scss"
+        }
+      },
       "root": "",
       "sourceRoot": "src",
       "prefix": "app",
@@ -27,7 +31,17 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss",
+              {
+                "input": "src/theme/dark.css",
+                "bundleName": "dark",
+                "inject": false
+              },
+              {
+                "input": "src/theme/light.css",
+                "bundleName": "light",
+                "inject": false
+              }
             ],
             "scripts": []
           },
@@ -85,7 +99,7 @@
               }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }

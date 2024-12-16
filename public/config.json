@@ -1,0 +1,106 @@
+{
+  "steps": {
+    "TakeImage": {
+      "fields": [
+        {
+          "key": "includePointcloud",
+          "type": "checkbox",
+          "label": "Include Pointcloud?",
+          "default": false
+        },
+        {
+          "key": "imageScope",
+          "type": "select",
+          "label": "Image Scope",
+          "options": [
+            {
+              "label": "Full Battery",
+              "value": "FullBattery"
+            },
+            {
+              "label": "Section",
+              "value": "Section"
+            }
+          ],
+          "default": "FullBattery"
+        },
+        {
+          "key": "x",
+          "type": "input",
+          "label": "X Coordinate",
+          "default": 0,
+          "validators": {
+            "min": 0
+          },
+          "conditions": {
+            "visibleIf": {
+              "imageScope": "Section"
+            }
+          }
+        },
+        {
+          "key": "y",
+          "type": "input",
+          "label": "Y Coordinate",
+          "default": 0,
+          "validators": {
+            "min": 0
+          },
+          "conditions": {
+            "visibleIf": {
+              "imageScope": "Section"
+            }
+          }
+        }
+      ]
+    },
+    "Unscrewing": {
+      "fields": [
+        {
+          "key": "mode",
+          "type": "select",
+          "label": "Unscrewing Mode",
+          "options": [
+            {
+              "label": "Automatic",
+              "value": "Automatic"
+            },
+            {
+              "label": "Specific",
+              "value": "Specific"
+            }
+          ],
+          "default": "Automatic"
+        },
+        {
+          "key": "x",
+          "type": "input",
+          "label": "X Coordinate",
+          "default": 0,
+          "validators": {
+            "min": 0
+          },
+          "conditions": {
+            "visibleIf": {
+              "mode": "Specific"
+            }
+          }
+        },
+        {
+          "key": "y",
+          "type": "input",
+          "label": "Y Coordinate",
+          "default": 0,
+          "validators": {
+            "min": 0
+          },
+          "conditions": {
+            "visibleIf": {
+              "mode": "Specific"
+            }
+          }
+        }
+      ]
+    }
+  }
+}
