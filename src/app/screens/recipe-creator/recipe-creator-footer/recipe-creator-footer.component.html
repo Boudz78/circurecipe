@@ -1,0 +1,16 @@
+<div class="flex sticky bottom-0 z-10 border-t-2 pt-2 border-amber">
+  <div class="inline-flex flex-1 justify-between">
+    @if (leftTemplate()) {
+      <div>
+        <div class="flex gap-1 justify-center items-center">
+          <ng-template [ngTemplateOutlet]="$any(leftTemplate())" />
+        </div>
+      </div>
+    }
+    @if (rightTemplate()) {
+      <div class="flex justify-center items-center gap-1">
+        <ng-template [ngTemplateOutlet]="$any(rightTemplate())" />
+      </div>
+    }
+  </div>
+</div>

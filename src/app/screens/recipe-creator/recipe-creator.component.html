@@ -1,0 +1,174 @@
+<div class="flex h-full w-full justify-center items-center">
+  <div class="flex h-full w-full lg:h-3/4 lg:w-1/2 rounded-xl" style="background: var(--surface-0)">
+    <div class="flex justify-center items-center h-full p-5 flex-1 overflow-auto">
+      <form class="flex-1 flex justify-center items-center h-full" [formGroup]="recipeForm">
+        <p-stepper class="h-full flex-1" [linear]="true"
+                   [orientation]="screenView === 'mobile' ? 'vertical' : 'horizontal'">
+          <p-stepperPanel class="h-full" header="Recipe Creation">
+            <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
+              <recipe-header title="Recipe Creation"
+                             description="Let's Get Started with Creating your First Recipe!" />
+              <div class="flex gap-2 flex-col justify-center items-center flex-1">
+                <div>
+                  <h3>Recipe Name</h3>
+                  <input
+                    type="text"
+                    placeholder="Enter recipe name"
+                    pInputText
+                    formControlName="name"
+                    variant="filled" />
+                </div>
+                <div class="flex flex-col justify-center items-center gap-1">
+                  <p-button [disabled]="recipeForm.get('name')?.invalid" label="Create New Recipe"
+                            (click)="nextCallback.emit()" />
+                  @if ($any(recipeForm.get('steps'))['controls']?.length > 0) {
+                    <p-button [disabled]="recipeForm.get('name')?.invalid" label="Reset Recipe"
+                              (click)="resetForm()" severity="danger" />
+                  }
+                </div>
+              </div>
+              <div>
+                <div class="text-amber-500 flex justify-center items-center">
+                  <img width="100" height="100" src="robot.svg" alt="Robot Icon" class="pr-4">
+
+                  <div class="text-gray-400 pt-2 flex flex-col">
+                    <div class="pb-3">
+                      Modify Existing Recipe?
+                    </div>
+                    <p-button size="small" label="Import Recipe" (click)="input.click();" />
+                    <input #input type="file" (change)="importRecipe($event,nextCallback)" accept=".json" hidden />
+                  </div>
+                </div>
+              </div>
+            </ng-template>
+          </p-stepperPanel>
+          <p-stepperPanel header="Steps Configuration">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-nextCallback="nextCallback"
+                         let-index="index">
+              <recipe-header title="Step Configuration"
+                             description="Define the steps, and I’ll handle the rest to bring your tasks to life."
+                             [showImage]="true" />
+              <div class="flex-1 overflow-y-auto flex">
+                <div formArrayName="steps" class="flex-1 py-2 v-fix">
+                  @for (step of $any(recipeForm.get('steps'))['controls']; let i = $index; track i) {
+                    <div [formGroupName]="i">
+                      <div class="mb-3 flex ">
+                        <span class="text-2xl font-bold pr-1">Step {{ i + 1 }}</span>
+                        <div class="inline-flex justify-center items-center">
+                          <div class="rounded-2xl bg-amber-500  px-1.5 py-0.5 ">
+                            <span class=" text-sm text-white	">{{ step.get('stepType')?.value }}</span>
+                          </div>
+                        </div>
+
+                      </div>
+                      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+
+                        @for (field of getFieldsForStep(step.get('stepType')?.value); let i = $index; track i) {
+                          <div *ngIf="isFieldVisible(field, step.value)">
+                            <div class="my-2">
+                              {{ field.label }}
+                            </div>
+
+                            <div class="flex justify-center items-center">
+                              @switch (field.type) {
+                                @case ('input') {
+                                  <input
+                                    type="number"
+                                    [placeholder]="field.label"
+                                    pInputText
+                                    [formControlName]="field.key"
+                                    variant="filled" />
+                                }
+                                @case ('select') {
+                                  <p-dropdown
+                                    [options]="field.options"
+                                    [formControlName]="field.key"
+                                    appendTo="body"
+                                    optionLabel="label"
+                                    optionValue="value"
+                                    placeholder="Battery" />
+                                }
+                                @case ('checkbox') {
+                                  <p-checkbox
+                                    binary="true"
+                                    [formControlName]="field.key" />
+                                }
+                                @default {
+                                  <span>Unsupported Field</span>
+                                }
+
+                              }
+                            </div>
+                            <!-- Validation Messages -->
+                            <div *ngIf="step.get(field.key)?.invalid && step.get(field.key)?.touched">
+                              <small *ngIf="step.get(field.key)?.errors?.['required']">
+                                {{ field.label }} is required.
+                              </small>
+                              <small *ngIf="step.get(field.key)?.errors?.['min']">
+                                {{ field.label }} must be at least {{ step.get(field.key)?.errors?.['min']?.min }}.
+                              </small>
+                              <small *ngIf="step.get(field.key)?.errors?.['max']">
+                                {{ field.label }} must be no more than {{ step.get(field.key)?.errors?.['max']?.max }}.
+                              </small>
+                              <small *ngIf="step.get(field.key)?.errors?.['pattern']">
+                                {{ field.label }} format is invalid.
+                              </small>
+                            </div>
+                          </div>
+                        }
+                      </div>
+                      <div class="py-2">
+                        <p-button (click)="removeStep(i)" severity="danger" size="small" rounded="true"
+                                  label="Delete Step" />
+                      </div>
+                      <p-divider />
+                    </div>
+                  } @empty {
+                    <div class="flex-1 flex justify-center items-center">
+                      <div class="pt-48 text-gray-400">
+                        Start adding recipes using the available recipes below.
+                      </div>
+                    </div>
+                  }
+                </div>
+              </div>
+              <recipe-footer [leftTemplate]="leftTemplateSteps" [rightTemplate]="rightTemplateSteps" />
+              <ng-template #leftTemplateSteps>
+                <p-button label="Go Back" (click)="prevCallback.emit()" />
+                <p-button [disabled]="recipeForm.invalid" label="Export Recipe" (click)="nextCallback.emit()" />
+              </ng-template>
+              <ng-template #rightTemplateSteps>
+
+                @for (step of $any(recipeStore).availableRecipes(); track $index) {
+                  <p-button [label]="step" (click)="addStep(step)" />
+                }
+              </ng-template>
+
+            </ng-template>
+          </p-stepperPanel>
+
+          <p-stepperPanel header="Export">
+            <ng-template pTemplate="content" let-prevCallback="prevCallback" let-index="index">
+
+              <recipe-header title="Export Recipe"
+                             description="Great work! Now let’s export your recipe as a JSON file, so it’s ready for action. Just say the
+                    word, and I’ll package it up for you!"
+                             [showImage]="true" />
+              <div class="flex flex-1 justify-center items-center flex-col gap-1">
+                <p-button label="Export Recipe" (click)="exportRecipe()" />
+
+              </div>
+              <recipe-footer [leftTemplate]="leftExportButtons" />
+
+              <ng-template #leftExportButtons>
+                <p-button label="Go Back" (click)="prevCallback.emit()" />
+
+              </ng-template>
+            </ng-template>
+          </p-stepperPanel>
+        </p-stepper>
+
+      </form>
+    </div>
+  </div>
+</div>

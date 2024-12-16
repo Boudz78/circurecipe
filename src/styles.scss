@@ -1,0 +1,69 @@
+//@import "primeng/resources/themes/aura-light-amber/theme.css";
+
+@import "primeng/resources/primeng.css";
+@import "primeicons/primeicons.css";
+
+
+@tailwind utilities;
+/* Global styles and resets */
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  background: var(--bluegray-900);
+}
+
+@keyframes move {
+  0% {
+    transform: translate(0, 0) rotate(0deg); /* Start at initial position */
+  }
+  100% {
+    transform: translate(calc(-200vw), 0) rotate(720deg); /* Move entirely offscreen horizontally */
+  }
+}
+
+.p-stepper.p-stepper-vertical .p-stepper-panel .p-stepper-content {
+  display: flex;
+  flex: 1;
+
+
+  div[role="tabpanel"] {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+
+  }
+
+}
+
+.p-stepper {
+  div[role="tablist"] {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+  }
+
+  .p-stepper-panels {
+    flex: 1;
+    display: flex;
+    padding: 0 1.25rem 0 1.25rem;
+    overflow-y: auto;
+
+    p-steppercontent {
+      display: flex;
+      flex: 1;
+
+      div[role="tabpanel"] {
+        display: flex;
+        flex: 1;
+        flex-direction: column;
+      }
+    }
+  }
+
+}
+
+.p-inputtext {
+  padding: 0.5rem 0.5rem;
+}
+
