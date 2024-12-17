@@ -3,6 +3,7 @@
     <div class="flex justify-center items-center h-full p-5 flex-1 overflow-auto">
       <form class="flex-1 flex justify-center items-center h-full" [formGroup]="recipeForm">
         <p-stepper class="h-full flex-1" [linear]="true"
+                   [(activeStep)]="activeStep"
                    [orientation]="screenView === 'mobile' ? 'vertical' : 'horizontal'">
           <p-stepperPanel class="h-full" header="Recipe Creation">
             <ng-template pTemplate="content" let-nextCallback="nextCallback" let-index="index">
@@ -134,8 +135,8 @@
               </div>
               <recipe-footer [leftTemplate]="leftTemplateSteps" [rightTemplate]="rightTemplateSteps" />
               <ng-template #leftTemplateSteps>
-                <p-button class="w-full" styleClass="w-full" label="Go Back" (click)="prevCallback.emit()" />
-                <p-button [disabled]="recipeForm.invalid" label="Export Recipe" severity="help"
+                <p-button label="Go Back" (click)="prevCallback.emit()" />
+                <p-button [disabled]="recipeForm.invalid" label="Export Recipe"
                           (click)="nextCallback.emit()" />
               </ng-template>
               <ng-template #rightTemplateSteps>
@@ -164,7 +165,8 @@
                 <p-button label="Go Back" (click)="prevCallback.emit()" />
               </ng-template>
               <ng-template #rightExportButtons>
-                <p-button label="Reset Form" severity="danger" (click)="resetForm()" />
+                <p-button label="Reset Form" severity="danger"
+                          (click)="resetForm();activeStep.set(0)" />
               </ng-template>
             </ng-template>
           </p-stepperPanel>

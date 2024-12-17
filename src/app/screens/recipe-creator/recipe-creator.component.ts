@@ -1,4 +1,4 @@
-import { Component, HostListener, inject } from '@angular/core'
+import { Component, HostListener, inject, signal } from '@angular/core'
 import { ButtonModule } from 'primeng/button'
 import { CommonModule } from '@angular/common'
 import { PaginatorModule } from 'primeng/paginator'
@@ -50,6 +50,7 @@ export class RecipeCreatorComponent {
   recipeService = inject(RecipeService)
   formBuilder = inject(FormBuilder)
   recipeForm: FormGroup
+  activeStep = signal(0)
 
   constructor() {
     this.recipeStore.loadRecipeConfig()
