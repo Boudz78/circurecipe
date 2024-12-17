@@ -1,12 +1,6 @@
-import {
-  Component,
-  effect,
-  EventEmitter,
-  HostListener,
-  inject,
-} from '@angular/core'
-import { Button, ButtonModule } from 'primeng/button'
-import { CommonModule, NgForOf, NgIf, NgSwitchCase } from '@angular/common'
+import { Component, HostListener, inject } from '@angular/core'
+import { ButtonModule } from 'primeng/button'
+import { CommonModule } from '@angular/common'
 import { PaginatorModule } from 'primeng/paginator'
 import { MessageService, PrimeTemplate } from 'primeng/api'
 import {

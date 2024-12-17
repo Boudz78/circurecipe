@@ -126,7 +126,7 @@
                   } @empty {
                     <div class="flex-1 flex justify-center items-center">
                       <div class="pt-48 text-gray-400">
-                        Start adding recipes using the available recipes below.
+                        Start adding recipes using the available steps below.
                       </div>
                     </div>
                   }
@@ -134,11 +134,11 @@
               </div>
               <recipe-footer [leftTemplate]="leftTemplateSteps" [rightTemplate]="rightTemplateSteps" />
               <ng-template #leftTemplateSteps>
-                <p-button label="Go Back" (click)="prevCallback.emit()" />
-                <p-button [disabled]="recipeForm.invalid" label="Export Recipe" (click)="nextCallback.emit()" />
+                <p-button class="w-full" styleClass="w-full" label="Go Back" (click)="prevCallback.emit()" />
+                <p-button [disabled]="recipeForm.invalid" label="Export Recipe" severity="help"
+                          (click)="nextCallback.emit()" />
               </ng-template>
               <ng-template #rightTemplateSteps>
-
                 @for (step of $any(recipeStore).availableRecipes(); track $index) {
                   <p-button [label]="step" (click)="addStep(step)" />
                 }
@@ -158,11 +158,13 @@
                 <p-button label="Export Recipe" (click)="exportRecipe()" />
 
               </div>
-              <recipe-footer [leftTemplate]="leftExportButtons" />
+              <recipe-footer [leftTemplate]="leftExportButtons" [rightTemplate]="rightExportButtons" />
 
               <ng-template #leftExportButtons>
                 <p-button label="Go Back" (click)="prevCallback.emit()" />
-
+              </ng-template>
+              <ng-template #rightExportButtons>
+                <p-button label="Reset Form" severity="danger" (click)="resetForm()" />
               </ng-template>
             </ng-template>
           </p-stepperPanel>

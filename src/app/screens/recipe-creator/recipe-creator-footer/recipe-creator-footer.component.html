@@ -2,13 +2,13 @@
   <div class="inline-flex flex-1 justify-between">
     @if (leftTemplate()) {
       <div>
-        <div class="flex gap-1 justify-center items-center">
+        <div class="flex gap-1 justify-center items-center flex-col md:flex-row">
           <ng-template [ngTemplateOutlet]="$any(leftTemplate())" />
         </div>
       </div>
     }
     @if (rightTemplate()) {
-      <div class="flex justify-center items-center gap-1">
+      <div class="flex justify-center items-center gap-1  flex-col md:flex-row">
         <ng-template [ngTemplateOutlet]="$any(rightTemplate())" />
       </div>
     }
